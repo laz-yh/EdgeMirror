@@ -52,6 +52,19 @@ export default {
       });
     }
 
+    if (url.pathname === "/favicon.ico") {
+      return new Response(
+        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient></defs><rect width="100" height="100" rx="20" fill="url(#g)"/><path d="M50 25a25 25 0 00-25 25h10a15 15 0 0115-15v-8l16 16-16 16v-8a25 25 0 0025-25h-10z" fill="#fff" opacity="0.95"/><circle cx="35" cy="50" r="3" fill="#6366f1"/><circle cx="65" cy="50" r="3" fill="#6366f1"/></svg>`,
+        {
+          status: 200,
+          headers: {
+            "Content-Type": "image/svg+xml",
+            "Cache-Control": "public, max-age=86400",
+          },
+        }
+      );
+    }
+
     if (HEALTH_PATHS.has(url.pathname)) {
       return jsonResponse({
         status: "ok",

@@ -215,7 +215,7 @@ function htmlPage(request) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal Python Proxy | w0x7ce</title>
+    <title>Universal Python Proxy</title>
     <style>
         :root { --text-main: #2f3d4b; --text-muted: #73808d; --accent: #d89086; --btn-bg: #e8f1f6; --btn-hover: #dbe9f0; --border: #e3ebf2; --cmd-bg: #f8fbfd; --cmd-text: #334155; }
         * { box-sizing: border-box; margin: 0; padding: 0; }

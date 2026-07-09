@@ -105,7 +105,7 @@ function htmlPage(request) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal Mirrors | w0x7ce</title>
+    <title>Universal Mirrors</title>
     <style>
         :root {
             --bg: #f8fafc; /* 极简灰白 */

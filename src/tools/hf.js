@@ -133,7 +133,7 @@ function htmlPage(request) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hugging Face Proxy | w0x7ce</title>
+    <title>Hugging Face Proxy</title>
     <style>
         :root {
             --bg: #f6f8fa; /* 浅灰背景 */

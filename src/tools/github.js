@@ -161,7 +161,7 @@ function htmlPage(request) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub 加速通道 | w0x7ce</title>
+    <title>GitHub 加速通道</title>
     <link rel="icon" href="https://github.githubassets.com/favicons/favicon.svg">
     <style>
         :root {
