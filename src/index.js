@@ -1,5 +1,5 @@
 import portal from "./tools/portal.js";
-import { ADS_TXT, HEALTH_PATHS, HELP_DEFINITION, PROJECT, TOOL_DEFINITIONS } from "./config.js";
+import { HEALTH_PATHS, HELP_DEFINITION, PROJECT, TOOL_DEFINITIONS } from "./config.js";
 import docker from "./tools/docker.js";
 import github from "./tools/github.js";
 import help from "./tools/help.js";
@@ -45,11 +45,7 @@ export default {
     const url = new URL(request.url);
 
     if (url.pathname === "/ads.txt") {
-      return textResponse(`${ADS_TXT}\n`, {
-        headers: {
-          "Cache-Control": "public, max-age=3600",
-        },
-      });
+      return new Response("Not Found", { status: 404 });
     }
 
     if (url.pathname === "/favicon.ico") {
