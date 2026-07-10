@@ -6,8 +6,40 @@ export const LANGUAGES = {
 
 export function getLanguage(request) {
   const url = new URL(request.url);
-  const lang = url.searchParams.get("lang");
-  return Object.hasOwn(LANGUAGES, lang) ? lang : "en";
+  const urlLang = url.searchParams.get("lang");
+  if (Object.hasOwn(LANGUAGES, urlLang)) return urlLang;
+
+  // Fallback: detect from Accept-Language header
+  const acceptLanguage = request.headers.get("Accept-Language") || "";
+  const detected = detectLanguage(acceptLanguage);
+  if (Object.hasOwn(LANGUAGES, detected)) return detected;
+
+  return "en";
+}
+
+function detectLanguage(acceptLanguage) {
+  if (!acceptLanguage) return "en";
+
+  const tags = acceptLanguage
+    .split(",")
+    .map((part) => {
+      const [tag, qValue] = part.trim().split(";q=");
+      return {
+        tag: tag.trim().toLowerCase().replace(/-[\w-]+/, ""),
+        quality: qValue ? parseFloat(qValue) : 1.0,
+      };
+    })
+    .filter((item) => item.tag && !isNaN(item.quality))
+    .sort((a, b) => b.quality - a.quality);
+
+  for (const { tag } of tags) {
+    // Match zh, zh-cn, zh-tw, etc. to "zh"
+    if (tag.startsWith("zh")) return "zh";
+    if (tag.startsWith("es")) return "es";
+    if (tag.startsWith("en") || tag === "") return "en";
+  }
+
+  return "en";
 }
 
 export function localizeUrl(url, lang) {
@@ -61,9 +93,26 @@ export function renderClientI18nScript(currentLang) {
   return `<script>window.__EDGEMIRROR_I18N__=${payload};(function(){
   var config = window.__EDGEMIRROR_I18N__;
   if (!config || !config.dictionary) return;
-  document.documentElement.lang = config.htmlLang || "en";
+  var currentLang = config.lang;
+  var htmlLang = config.htmlLang || "en";
   var dictionary = config.dictionary;
   var skipTags = new Set(["SCRIPT", "STYLE", "CODE", "PRE", "SVG", "PATH"]);
+
+  // Timezone-based auto-detection: only when server defaulted to English
+  if (currentLang === "en") {
+    var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+    if (tz.includes("Asia") || tz.includes("Shanghai") || tz.includes("Beijing") || tz.includes("Hong") || tz.includes("Taipei")) {
+      currentLang = "zh";
+      htmlLang = "zh-CN";
+      dictionary = UI_TRANSLATIONS.zh || dictionary;
+    } else if (tz.includes("Spain") || tz.includes("Mexico") || tz.includes("Argentina") || tz.includes("Buenos")) {
+      currentLang = "es";
+      htmlLang = "es";
+      dictionary = UI_TRANSLATIONS.es || dictionary;
+    }
+  }
+
+  document.documentElement.lang = htmlLang;
   function translate(value) {
     if (!value) return value;
     var trimmed = value.trim().replace(/\\s+/g, " ");
